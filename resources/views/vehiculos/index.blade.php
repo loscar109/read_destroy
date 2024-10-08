@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            <a href="..">
+            <a href="{{ route('vehiculos.create') }}">
                 Crear Vehículo +
             </a>
         </h2>
@@ -34,9 +34,11 @@
                                         <button onclick="confirmDelete({{ $vehiculo->id }})" class="bg-red-500 text-white p-2 rounded">
                                             Eliminar
                                         </button> 
-                                        <button class="bg-blue-500 text-white p-2 rounded">
+                                   <!-- En la tabla de vehículos -->
+                                        <a href="{{ route('vehiculos.edit', $vehiculo->id) }}" class="bg-blue-500 text-white p-2 rounded">
                                             Editar
-                                        </button>
+                                        </a>
+
                                     </td>
                                 </tr>
                                 @endforeach

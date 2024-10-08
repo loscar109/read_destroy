@@ -34,4 +34,9 @@ class Modelo extends Model
       {
           return $this->hasMany(Vehiculo::class);
       }
+
+      public function mostrarDatosMarca()
+      {
+        return $this->nombre . " - " . $this->marca->nombre;
+      }
 }

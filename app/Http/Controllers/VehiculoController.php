@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVehiculoRequest;
 use App\Http\Requests\UpdateVehiculoRequest;
 use App\Models\Vehiculo;
+use App\Models\Modelo;
 
 class VehiculoController extends Controller
 {
@@ -26,7 +27,9 @@ class VehiculoController extends Controller
      */
     public function create()
     {
-        //
+        
+        $modelos = Modelo::all();
+        return view('vehiculos.create', compact('modelos'));
     }
 
     /**
@@ -37,7 +40,15 @@ class VehiculoController extends Controller
      */
     public function store(StoreVehiculoRequest $request)
     {
-        //
+        // Crear el nuevo vehículo
+        $vehiculo = new Vehiculo();
+        $vehiculo->patente = $request->input('patente');
+        $vehiculo->chasis = $request->input('chasis');
+        $vehiculo->modelo_id = $request->input('modelo_id'); // Asigna la relación con el modelo
+
+        // Guardar en la base de datos
+        $vehiculo->save();
+        return redirect()->route('vehiculos.index');
     }
 
     /**
@@ -59,7 +70,8 @@ class VehiculoController extends Controller
      */
     public function edit(Vehiculo $vehiculo)
     {
-        //
+        $modelos = Modelo::all();
+        return view('vehiculos.edit', compact('vehiculo','modelos'));
     }
 
     /**
@@ -71,8 +83,19 @@ class VehiculoController extends Controller
      */
     public function update(UpdateVehiculoRequest $request, Vehiculo $vehiculo)
     {
-        //
+        // Validar los datos enviados (esto ya se maneja con el Form Request `UpdateVehiculoRequest`)
+        
+        // Actualizar los datos del vehículo con los valores del formulario
+        $vehiculo->update([
+            'patente' => $request->input('patente'),
+            'chasis' => $request->input('chasis'),
+            'modelo_id' => $request->input('modelo_id'),
+        ]);
+    
+        // Redireccionar a la vista principal de vehículos con un mensaje de éxito
+        return redirect()->route('vehiculos.index');
     }
+    
 
     /**
      * Remove the specified resource from storage.
