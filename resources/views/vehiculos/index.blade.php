@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            <a href="{{ route('vehiculos.create') }}">
+            <a href="{{ route('vehiculos.create') }}" class="bg-green-500 text-white p-2 rounded">
                 Crear Vehículo +
             </a>
         </h2>
@@ -11,9 +11,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
- 
                     <div class="relative overflow-x-auto">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">                            
+                        <table id="vehiculosTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">                            
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">    
                                 <tr>
                                     <th>Patente</th>
@@ -34,11 +33,9 @@
                                         <button onclick="confirmDelete({{ $vehiculo->id }})" class="bg-red-500 text-white p-2 rounded">
                                             Eliminar
                                         </button> 
-                                   <!-- En la tabla de vehículos -->
                                         <a href="{{ route('vehiculos.edit', $vehiculo->id) }}" class="bg-blue-500 text-white p-2 rounded">
                                             Editar
                                         </a>
-
                                     </td>
                                 </tr>
                                 @endforeach
@@ -65,18 +62,35 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script>
-        function confirmDelete(vehiculoId) {
-            // Establece la acción del formulario al ID del vehículo
-            var form = document.getElementById('deleteForm');
-            form.action = `/vehiculos/${vehiculoId}`;  // Ruta correcta para eliminar el vehículo
+        $(document).ready(function() {
+            $('#vehiculosTable').DataTable({
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ registros",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay registros disponibles",
+                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+        });
 
-            // Muestra el popup
+        function confirmDelete(vehiculoId) {
+            var form = document.getElementById('deleteForm');
+            form.action = `/vehiculos/${vehiculoId}`;
             document.getElementById('deletePopup').style.display = 'flex';
         }
 
         function closePopup() {
-            // Oculta el popup
             document.getElementById('deletePopup').style.display = 'none';
         }
     </script>
