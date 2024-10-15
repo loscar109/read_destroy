@@ -7,11 +7,24 @@
         </h2>
     </x-slot>
 
+
+
+
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="relative overflow-x-auto">
+
+                        @if(session('success'))
+                        <div class="bg-green-100 dark:bg-green-900 border border-green-400 text-green-700 dark:text-green-200 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">¡Éxito!</strong>
+                            <span class="block sm:inline">{{ session('success') }}</span>
+                        </div>
+                        @endif
+                        <br>
+
                         <table id="vehiculosTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">                            
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">    
                                 <tr>
@@ -19,6 +32,7 @@
                                     <th>Chasis</th>
                                     <th>Modelo</th>
                                     <th>Marca</th>
+                                    <th>Imagen</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -29,6 +43,13 @@
                                     <td>{{ $vehiculo->chasis }}</td>
                                     <td>{{ $vehiculo->modelo->nombre }}</td>
                                     <td>{{ $vehiculo->modelo->marca->nombre }}</td>
+                                        <td>
+                                            @if ($vehiculo->image)
+                                                <img src="{{ asset('storage/' . $vehiculo->image) }}" alt="Imagen del Vehículo" class="w-16 h-16 object-cover">
+                                            @else
+                                                Sin imagen
+                                            @endif
+                                        </td>
                                     <td>
                                         <button onclick="confirmDelete({{ $vehiculo->id }})" class="bg-red-500 text-white p-2 rounded">
                                             Eliminar

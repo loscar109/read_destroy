@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('vehiculos', function (Blueprint $table) {
             $table->id();
-            $table->string('patente');
+            $table->string('patente')->unique();
             $table->string('chasis');
             $table->unsignedBigInteger("modelo_id");
+            $table->string('image')->nullable(); // Añadir campo imagen
             $table->foreign("modelo_id")
                 ->references("id")
                 ->on("modelos");   

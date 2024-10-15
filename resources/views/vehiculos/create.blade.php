@@ -10,8 +10,10 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <!-- Formulario para crear un nuevo vehículo -->
-                    <form action="{{ route('vehiculos.store') }}" method="POST">
+                    <form action="{{ route('vehiculos.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        
+                        <!-- Campo Patente -->
                         <label for="patente_vehiculo" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Patente</label>
                         <input id="patente_vehiculo" type="text" name="patente" value="{{ old('patente') }}" required autofocus
                             class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border
@@ -20,6 +22,7 @@
                             dark:text-gray-100 sm:text-sm"
                         >
 
+                        <!-- Campo Chasis -->
                         <label for="chasis_vehiculo" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Chasis</label>
                         <input id="chasis_vehiculo" type="text" name="chasis" value="{{ old('chasis') }}" required autofocus
                             class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border
@@ -28,6 +31,7 @@
                             dark:text-gray-100 sm:text-sm"
                         >
 
+                        <!-- Campo Modelo -->
                         <label for="select_opcion" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">Selecciona una opción</label>
                         <select id="select_opcion" name="modelo_id"
                             class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-100 sm:text-sm"
@@ -38,6 +42,12 @@
                                 </option>
                             @endforeach   
                         </select>
+
+                        <!-- Campo para subir la imagen -->
+                        <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">Imagen del vehículo</label>
+                        <input id="image" type="file" name="image" accept="image/*"
+                            class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-100 sm:text-sm"
+                        >
 
                         <!-- Botones de Guardar y Volver -->
                         <div class="mt-6 flex justify-between">

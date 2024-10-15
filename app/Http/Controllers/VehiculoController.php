@@ -17,6 +17,7 @@ class VehiculoController extends Controller
     public function index()
     {
         $vehiculos = Vehiculo::all();
+   
         return view('vehiculos.index',compact('vehiculos'));
     }
 
@@ -46,9 +47,15 @@ class VehiculoController extends Controller
         $vehiculo->chasis = $request->input('chasis');
         $vehiculo->modelo_id = $request->input('modelo_id'); // Asigna la relación con el modelo
 
+        // Guardar la imagen si se sube
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('vehiculos', 'public'); // Guardar en la carpeta storage/app/public/vehiculos
+            $vehiculo->image = $imagePath;
+        }
+
         // Guardar en la base de datos
         $vehiculo->save();
-        return redirect()->route('vehiculos.index');
+        return redirect()->route('vehiculos.index')->with('success', 'Vehículo registrado exitosamente.');
     }
 
     /**
@@ -83,18 +90,31 @@ class VehiculoController extends Controller
      */
     public function update(UpdateVehiculoRequest $request, Vehiculo $vehiculo)
     {
-        // Validar los datos enviados (esto ya se maneja con el Form Request `UpdateVehiculoRequest`)
-        
-        // Actualizar los datos del vehículo con los valores del formulario
-        $vehiculo->update([
-            'patente' => $request->input('patente'),
-            'chasis' => $request->input('chasis'),
-            'modelo_id' => $request->input('modelo_id'),
-        ]);
+        // Verificar si se subió una nueva imagen
+        if ($request->hasFile('image')) {
+            // Guardar la nueva imagen en la carpeta 'vehiculos' en el almacenamiento público
+            $imagePath = $request->file('image')->store('vehiculos', 'public');
+    
+            // Actualizar los datos del vehículo con la nueva imagen
+            $vehiculo->update([
+                'patente' => $request->input('patente'),
+                'chasis' => $request->input('chasis'),
+                'modelo_id' => $request->input('modelo_id'),
+                'image' => $imagePath, // Actualizar el campo de imagen
+            ]);
+        } else {
+            // Si no hay imagen, actualizar solo los demás campos
+            $vehiculo->update([
+                'patente' => $request->input('patente'),
+                'chasis' => $request->input('chasis'),
+                'modelo_id' => $request->input('modelo_id'),
+            ]);
+        }
     
         // Redireccionar a la vista principal de vehículos con un mensaje de éxito
-        return redirect()->route('vehiculos.index');
+        return redirect()->route('vehiculos.index')->with('success', 'Vehículo editado correctamente.');
     }
+    
     
 
     /**
@@ -109,6 +129,7 @@ class VehiculoController extends Controller
         $vehiculo->delete();
 
         // Redirige a la vista 
-        return redirect()->route('vehiculos.index');
+        return redirect()->route('vehiculos.index')->with('success', 'Vehículo eliminado correctamente.');
+
     }
 }

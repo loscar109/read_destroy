@@ -10,10 +10,11 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <!-- Formulario para editar el vehículo -->
-                    <form action="{{ route('vehiculos.update', $vehiculo->id) }}" method="POST">
+                    <form action="{{ route('vehiculos.update', $vehiculo->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
+                        <!-- Campo Patente -->
                         <label for="patente_vehiculo" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Patente</label>
                         <input id="patente_vehiculo" type="text" name="patente" value="{{ old('patente', $vehiculo->patente) }}" required autofocus
                             class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border
@@ -22,6 +23,7 @@
                             dark:text-gray-100 sm:text-sm"
                         >
 
+                        <!-- Campo Chasis -->
                         <label for="chasis_vehiculo" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Chasis</label>
                         <input id="chasis_vehiculo" type="text" name="chasis" value="{{ old('chasis', $vehiculo->chasis) }}" required autofocus
                             class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border
@@ -30,6 +32,7 @@
                             dark:text-gray-100 sm:text-sm"
                         >
 
+                        <!-- Campo Modelo -->
                         <label for="select_opcion" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">Modelo</label>
                         <select id="select_opcion" name="modelo_id"
                             class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-100 sm:text-sm"
@@ -40,6 +43,20 @@
                                 </option>
                             @endforeach
                         </select>
+
+                        <!-- Campo para la imagen -->
+                        <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mt-4">Imagen del vehículo</label>
+                        <input id="image" type="file" name="image" accept="image/*"
+                            class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:text-gray-100 sm:text-sm"
+                        >
+
+                        <!-- Mostrar imagen actual del vehículo, si existe -->
+                        @if($vehiculo->image)
+                            <div class="mt-4">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Imagen actual:</span>
+                                <img src="{{ asset('storage/' . $vehiculo->image) }}" alt="Imagen del vehículo" class="mt-2 h-40 w-auto rounded-lg">
+                            </div>
+                        @endif
 
                         <!-- Botones de guardar y volver -->
                         <div class="mt-6 flex justify-between">
@@ -52,7 +69,6 @@
                                 Volver
                             </a>
                         </div>
-
                     </form>
                 </div>
             </div>
